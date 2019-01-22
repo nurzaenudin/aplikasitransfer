@@ -43,6 +43,6 @@ public class PegawaiController {
     @DeleteMapping("/{id}")
     @ResponseBody
     public void hapusPegawai (@RequestParam String id){
-        pegawaiDao.delete(pegawaiDao.findById(id));
+        pegawaiDao.deleteById(id);
     }
 }
