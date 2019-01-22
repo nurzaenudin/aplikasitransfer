@@ -10,10 +10,12 @@ import com.nurzaenudin.aplikasitransfer.entity.Pegawai;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
@@ -37,5 +39,10 @@ public class PegawaiController {
     @ResponseBody
     public void tambahPegawai(@RequestBody @Valid Pegawai pegawai){
         pegawaiDao.save(pegawai);
+    }
+    @DeleteMapping("/{id}")
+    @ResponseBody
+    public void hapusPegawai (@RequestParam String id){
+        pegawaiDao.delete(pegawaiDao.findById(id));
     }
 }
