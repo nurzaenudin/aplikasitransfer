@@ -52,7 +52,7 @@ public class PegawaiController {
     
     @PutMapping("/{id}")
     @ResponseBody
-    public void update(@RequestBody @Valid Pegawai pegawai, @PathVariable String id){
+    public void updatePegawai(@RequestBody @Valid Pegawai pegawai, @PathVariable String id){
         Optional <Pegawai> p = pegawaiDao.findById(id);
         if (!p.isPresent())
             return;
