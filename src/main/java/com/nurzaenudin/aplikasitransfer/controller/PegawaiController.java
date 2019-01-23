@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,7 +30,7 @@ public class PegawaiController {
     @Autowired
     private PegawaiDao pegawaiDao;
     
-    @GetMapping(path="/all")
+    @GetMapping(path="")
     @ResponseBody
     public Iterable <Pegawai> getAllPegawai(){
         return pegawaiDao.findAll();
@@ -42,7 +43,7 @@ public class PegawaiController {
     }
     @DeleteMapping("/{id}")
     @ResponseBody
-    public void hapusPegawai (@RequestParam String id){
+    public void hapusPegawai (@PathVariable String id){
         pegawaiDao.deleteById(id);
     }
 }
