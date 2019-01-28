@@ -60,4 +60,17 @@ public class PegawaiController {
         pegawaiDao.save(pegawai);
         
     }
+    
+    @GetMapping("/cariNama/{nama}")
+    @ResponseBody
+    public Optional <Pegawai> getPegawaiNama (@PathVariable String nama){
+        return pegawaiDao.findByNama(nama);
+    }
+    
+    @GetMapping("/{id}")
+    @ResponseBody
+    public Optional<Pegawai> getPegawaiId(@PathVariable String id) {
+        return pegawaiDao.findById(id);
+    }
+      
 }

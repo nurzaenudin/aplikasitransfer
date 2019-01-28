@@ -6,6 +6,7 @@
 package com.nurzaenudin.aplikasitransfer.DAO;
 
 import com.nurzaenudin.aplikasitransfer.entity.Pegawai;
+import java.util.Optional;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 /**
@@ -14,5 +15,6 @@ import org.springframework.data.repository.PagingAndSortingRepository;
  */
 
 public interface PegawaiDao extends PagingAndSortingRepository<Pegawai, String>{
+    Optional <Pegawai> findByNama(String nama);
     
 }
