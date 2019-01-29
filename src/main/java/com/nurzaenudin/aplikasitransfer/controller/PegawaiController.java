@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * @author nurzaenudin
  */
 @Controller
-@CrossOrigin(origins="http://localhost:8080")
+@CrossOrigin(origins = "http://localhost:8080", allowCredentials = "true")
 @RequestMapping(path="/pegawai")
 public class PegawaiController {
     
@@ -35,6 +35,7 @@ public class PegawaiController {
     
     @GetMapping(path="")
     @ResponseBody
+    
     public Iterable <Pegawai> getAllPegawai(){
         return pegawaiDao.findAll();
     }
