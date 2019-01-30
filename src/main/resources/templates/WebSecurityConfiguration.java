@@ -16,7 +16,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.filter.CorsFilter;
 
 /**
  *
@@ -26,15 +25,36 @@ import org.springframework.web.filter.CorsFilter;
 @EnableWebSecurity
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter{
     
+    @Autowired
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+
+    }
+    
+    
+    @Override
+    protected void configure (HttpSecurity http) throws Exception{
+        http
+            .cors()
+            .and()
+            .authorizeRequests()
+            .requestMatchers().permitAll()
+            .anyRequest()
+            .authenticated()
+            .and()
+            .httpBasic();
+        http.csrf().disable();
+    }
+    
     @Bean
-    public CorsFilter corsFilter() {
-        final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        final CorsConfiguration config = new CorsConfiguration();
+    CorsConfigurationSource corsConfigurationSource(){
+        CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(Boolean.TRUE);
+        config.setAllowedHeaders(Arrays.asList("Authorizarion"));
         config.setAllowedOrigins(Arrays.asList("*"));
-        config.setAllowedHeaders(Arrays.asList("*"));
         config.setAllowedMethods(Arrays.asList("*"));
-        source.registerCorsConfiguration("*/**", config);
-        return new CorsFilter(source);
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", config);
+        return source;
+        
     }
 }

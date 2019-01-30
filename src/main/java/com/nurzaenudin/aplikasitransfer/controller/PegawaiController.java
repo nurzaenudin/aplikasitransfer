@@ -10,6 +10,7 @@ import com.nurzaenudin.aplikasitransfer.entity.Pegawai;
 import java.util.Optional;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -20,22 +21,24 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
  *
  * @author nurzaenudin
  */
 @Controller
-@CrossOrigin(origins = "http://localhost:8080", allowCredentials = "true")
+//@CrossOrigin(origins = "http://localhost:8080", allowCredentials = "true")
 @RequestMapping(path="/pegawai")
 public class PegawaiController {
     
     @Autowired
     private PegawaiDao pegawaiDao;
     
-    @GetMapping(path="")
+    @GetMapping(path="all")
     @ResponseBody
-    
+    //@CrossOrigin(origins = "http://localhost:8080", allowCredentials = "true")
+    @ResponseStatus( HttpStatus.OK) 
     public Iterable <Pegawai> getAllPegawai(){
         return pegawaiDao.findAll();
     }
