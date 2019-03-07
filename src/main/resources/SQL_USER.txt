@@ -31,7 +31,7 @@ CREATE TABLE `s_user_role` (
 
 CREATE TABLE `s_permission` (  
   `id` INT NOT NULL AUTO_INCREMENT,
-  `permission` VARCHAR(100) NOT NULL,
+  `name` VARCHAR(100) NOT NULL,
   `description` VARCHAR(100) NOT NULL,
   PRIMARY KEY (`id`)
 );
@@ -74,7 +74,7 @@ staf02 PEGAWAI_READ PEGAWAI_CREATE PEGAWAI_UPDATE
 admin  PEGAWAI_READ PEGAWAI_CREATE PEGAWAI_UPDATE, PEGAWAI_DELETE
 
 INSERT INTO `s_permission` 
-(`permission`, `description`)
+(`name`, `description`)
 VALUES
 ('PEGAWAI_CREATE', 'TAMBAH PEGAWAI'),
 ('PEGAWAI_READ', 'LIHAT PEGAWAI'),
@@ -102,7 +102,7 @@ values
 (3,4);
 
 untuk mengecek role dan permission
-SELECT s_role.id, s_role.role, s_role_permission.permission_id, s_permission.permission FROM s_role
+SELECT s_role.id, s_role.role, s_role_permission.permission_id, s_permission.name FROM s_role
 LEFT JOIN s_role_permission ON s_role.id = s_role_permission.role_id
 LEFT JOIN s_permission ON s_role_permission.permission_id=s_permission.id
 
@@ -120,11 +120,24 @@ LEFT JOIN s_user_role ON s_user.id=s_user_role.user_id
 LEFT JOIN s_role ON s_user_role.role_id=s_role.id
 
 untuk mengecek user role dan permission
-SELECT s_user.id, s_user.username, s_role.role, s_role_permission.permission_id, s_permission.permission FROM s_user
+SELECT s_user.id, s_user.username, s_role.role, s_role_permission.permission_id, s_permission.name FROM s_user
 LEFT JOIN s_user_role ON s_user.id=s_user_role.user_id
 LEFT JOIN s_role ON s_user_role.role_id=s_role.id
 LEFT JOIN s_role_permission ON s_role.id = s_role_permission.role_id
 LEFT JOIN s_permission ON s_role_permission.permission_id=s_permission.id
+
+untuk SQL_LOGIN Spring Security
+SELECT  u.username, up.password, u.active AS enabled FROM s_user u
+LEFT JOIN s_user_password up ON u.id=up.user_id
+WHERE u.username= ?;
+			
+untuk SQL_PERMISSION Spring Security			
+SELECT u.username, p.name FROM s_user u
+LEFT JOIN s_user_role ur ON u.id=ur.user_id
+LEFT JOIN s_role r ON ur.role_id=r.id
+LEFT JOIN s_role_permission rp ON r.id = rp.role_id
+LEFT JOIN s_permission p ON rp.permission_id=p.id
+WHERE u.username= ?;
 
 
 

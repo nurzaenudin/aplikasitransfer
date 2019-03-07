@@ -5,6 +5,8 @@
  */
 package com.nurzaenudin.aplikasitransfer.configuration;
 
+import javax.sql.DataSource;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -22,6 +24,16 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+    
+    public static final String SQL_LOGIN="SELECT  u.username, up.password, u.active AS enabled FROM s_user u " +
+            "LEFT JOIN s_user_password up ON u.id=up.user_id " +
+            "WHERE u.username= ?";
+    public static final String SQL_PERMISSION="SELECT u.username, p.name FROM s_user u " +
+            "LEFT JOIN s_user_role ur ON u.id=ur.user_id " +
+            "LEFT JOIN s_role r ON ur.role_id=r.id " +
+            "LEFT JOIN s_role_permission rp ON r.id = rp.role_id " +
+            "LEFT JOIN s_permission p ON rp.permission_id=p.id " +
+            "WHERE u.username= ?";
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -38,16 +50,31 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
     
             
+//    @Override
+//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+//        auth
+//                .inMemoryAuthentication()
+//                .withUser("udin")
+//                .authorities("USER_VIEW")
+//                .password(passwordEncoder().encode("rahasia"));
+//              
+//               
+//    }
+    
+    @Autowired
+    private DataSource datasource;
+    
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth
-                .inMemoryAuthentication()
-                .withUser("udin")
-                .authorities("USER_VIEW")
-                .password(passwordEncoder().encode("rahasia"));
-              
-               
+                .jdbcAuthentication()
+                .dataSource(datasource)
+                .usersByUsernameQuery(SQL_LOGIN)
+                .authoritiesByUsernameQuery(SQL_PERMISSION)
+                .passwordEncoder(passwordEncoder());
     }
+    
+    
     
     
 }
