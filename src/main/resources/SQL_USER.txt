@@ -1,16 +1,130 @@
-CREATE TABLE `latihan_user`.`s_user`(  
+CREATE TABLE `s_user`(  
   `id` VARCHAR(36) NOT NULL,
   `username` VARCHAR(250) NOT NULL,
   `active` BOOLEAN NOT NULL DEFAULT TRUE,
   PRIMARY KEY (`id`)
 );
 
-CREATE TABLE `latihan_user`.`s_user_password`(  
-  `id` VARCHAR(36) NOT NULL,
+CREATE TABLE `s_user_password`(  
+  `id` INT NOT NULL AUTO_INCREMENT,
   `user_id` VARCHAR(36) NOT NULL,
   `password` VARCHAR(15) NOT NULL,
   PRIMARY KEY (`id`),
-  FOREIGN KEY (`user_id`) REFERENCES `latihan_user`.`s_user`(`id`) ON UPDATE CASCADE ON DELETE CASCADE
+  FOREIGN KEY (`user_id`) REFERENCES `s_user`(`id`) ON UPDATE CASCADE ON DELETE CASCADE
 );
+
+CREATE TABLE `s_role` (  
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `role` VARCHAR(100) NOT NULL,
+  `description` VARCHAR(100) NOT NULL,
+  PRIMARY KEY (`id`)
+);
+
+CREATE TABLE `s_user_role` (  
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `user_id` VARCHAR(36) NOT NULL,
+  `role_id` INT NOT NULL,
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`user_id`) REFERENCES `s_user`(`id`) ON UPDATE CASCADE ON DELETE CASCADE,
+  FOREIGN KEY (`role_id`) REFERENCES `s_role`(`id`) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+CREATE TABLE `s_permission` (  
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `permission` VARCHAR(100) NOT NULL,
+  `description` VARCHAR(100) NOT NULL,
+  PRIMARY KEY (`id`)
+);
+
+CREATE TABLE `s_role_permission` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `role_id` int(11) NOT NULL,
+  `permission_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `role_id` (`role_id`),
+  KEY `permission_id` (`permission_id`),
+  FOREIGN KEY (`role_id`) REFERENCES `s_role` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY (`permission_id`) REFERENCES `s_permission` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+user001 password pass001
+user002 password pass002
+user003 password pass003
+
+INSERT INTO `s_user` 
+(`id`,`username`, `active`)
+VALUES
+('001', 'user001', 1),
+('002', 'user002', 1),
+('003', 'user003', 1);
+
+INSERT INTO `s_user_password` 
+(`user_id`, `password`)
+VALUES
+('001', '$2y$07$0TRTfI08osWWteKKYonAduWGIybeqljarMGMEj5sWLYnGuCB4As9O'),
+('002','$2y$07$pOs7dGwnfQvEVi6dy7s0c.UpOTOhGNS0J2hvebPv1QX4ZaLEg06Rq'),
+('003','$2y$07$C9UVg.9GCBYEvyIo58dT5eed8WbGIHbfKlGVe8Wbgp1I8BB/ZtQwu');
+
+user001 staf01 
+user002 staf01 staf02 
+user003 admin  
+
+staf01 PEGAWAI_READ
+staf02 PEGAWAI_READ PEGAWAI_CREATE PEGAWAI_UPDATE
+admin  PEGAWAI_READ PEGAWAI_CREATE PEGAWAI_UPDATE, PEGAWAI_DELETE
+
+INSERT INTO `s_permission` 
+(`permission`, `description`)
+VALUES
+('PEGAWAI_CREATE', 'TAMBAH PEGAWAI'),
+('PEGAWAI_READ', 'LIHAT PEGAWAI'),
+('PEGAWAI_UPDATE', 'EDIT PEGAWAI'),
+('PEGAWAI_DELETE', 'HAPUS PEGAWAI');
+
+INSERT INTO `s_role` 
+(`role`, `description`)
+VALUES
+('STAF01', 'STAF 01'),
+('STAF02', 'STAF 02'),
+('STAF03', 'ADMIN');
+
+
+insert into `s_role_permission` 
+(`role_id`, `permission_id`)
+values
+(1, 2),
+(2, 1),
+(2, 2),
+(2, 3),
+(3,1),
+(3,2),
+(3,3),
+(3,4);
+
+untuk mengecek role dan permission
+SELECT s_role.id, s_role.role, s_role_permission.permission_id, s_permission.permission FROM s_role
+LEFT JOIN s_role_permission ON s_role.id = s_role_permission.role_id
+LEFT JOIN s_permission ON s_role_permission.permission_id=s_permission.id
+
+INSERT INTO `s_user_role` 
+(`user_id`, `role_id`)
+VALUES
+('001',1),
+('002',1),
+('002',2),
+('003',3);
+
+untuk mengecek user dan role
+SELECT s_user.id, s_user.username, s_role.role FROM s_user
+LEFT JOIN s_user_role ON s_user.id=s_user_role.user_id
+LEFT JOIN s_role ON s_user_role.role_id=s_role.id
+
+untuk mengecek user role dan permission
+SELECT s_user.id, s_user.username, s_role.role, s_role_permission.permission_id, s_permission.permission FROM s_user
+LEFT JOIN s_user_role ON s_user.id=s_user_role.user_id
+LEFT JOIN s_role ON s_user_role.role_id=s_role.id
+LEFT JOIN s_role_permission ON s_role.id = s_role_permission.role_id
+LEFT JOIN s_permission ON s_role_permission.permission_id=s_permission.id
+
 
 
