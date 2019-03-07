@@ -8,7 +8,7 @@ CREATE TABLE `s_user`(
 CREATE TABLE `s_user_password`(  
   `id` INT NOT NULL AUTO_INCREMENT,
   `user_id` VARCHAR(36) NOT NULL,
-  `password` VARCHAR(15) NOT NULL,
+  `password` VARCHAR(100) NOT NULL,
   PRIMARY KEY (`id`),
   FOREIGN KEY (`user_id`) REFERENCES `s_user`(`id`) ON UPDATE CASCADE ON DELETE CASCADE
 );
