@@ -11,6 +11,7 @@ import java.util.Optional;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -37,14 +38,17 @@ public class PegawaiController {
     
     @GetMapping(path="all")
     @ResponseBody
+    @PreAuthorize("hasPermission=('PEGAWAI_READ')")
     //@CrossOrigin(origins = "http://localhost:8080", allowCredentials = "true")
     @ResponseStatus( HttpStatus.OK) 
     public Iterable <Pegawai> getAllPegawai(){
         return pegawaiDao.findAll();
     }
     
+    
     @PostMapping("")
     @ResponseBody
+    @PreAuthorize("hasPermission=('PEGAWAI_CREATE')")
     public void tambahPegawai(@RequestBody @Valid Pegawai pegawai){
         pegawaiDao.save(pegawai);
     }

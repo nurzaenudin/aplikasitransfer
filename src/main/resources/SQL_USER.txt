@@ -61,9 +61,9 @@ VALUES
 INSERT INTO `s_user_password` 
 (`user_id`, `password`)
 VALUES
-('001', '$2y$07$0TRTfI08osWWteKKYonAduWGIybeqljarMGMEj5sWLYnGuCB4As9O'),
-('002','$2y$07$pOs7dGwnfQvEVi6dy7s0c.UpOTOhGNS0J2hvebPv1QX4ZaLEg06Rq'),
-('003','$2y$07$C9UVg.9GCBYEvyIo58dT5eed8WbGIHbfKlGVe8Wbgp1I8BB/ZtQwu');
+('001', '$2a$12$36sdgpMvgF4/OKxXYXqpS.40ykG5rRwRU7p8BtOAi2B.Yuhr7xYky'),
+('002','$2a$12$gjIPcUx1c1IEmmBjjgyyjewLs75SBRmynG6nv11vbjXnbFrGBmcKG'),
+('003','$2a$12$s4PCYYM/whFSKZ3Djgji6..1UyERQ.xgtokNV8.MaclhVVHLiCXAi');
 
 user001 staf01 
 user002 staf01 staf02 
