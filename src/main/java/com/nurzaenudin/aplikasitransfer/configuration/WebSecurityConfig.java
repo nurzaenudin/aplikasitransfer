@@ -32,7 +32,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public static final String SQL_LOGIN="SELECT  u.username, up.password, u.active AS enabled FROM s_user u " +
             "LEFT JOIN s_user_password up ON u.id=up.user_id " +
             "WHERE u.username= ?";
-    public static final String SQL_PERMISSION="SELECT u.username, p.name FROM s_user u " +
+    public static final String SQL_PERMISSION="SELECT u.username, p.name as authority FROM s_user u " +
             "LEFT JOIN s_user_role ur ON u.id=ur.user_id " +
             "LEFT JOIN s_role r ON ur.role_id=r.id " +
             "LEFT JOIN s_role_permission rp ON r.id = rp.role_id " +

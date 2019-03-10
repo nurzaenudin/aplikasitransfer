@@ -38,7 +38,7 @@ public class PegawaiController {
     
     @GetMapping(path="all")
     @ResponseBody
-    @PreAuthorize("hasPermission=('PEGAWAI_READ')")
+    @PreAuthorize("hasAuthority('PEGAWAI_READ')")
     //@CrossOrigin(origins = "http://localhost:8080", allowCredentials = "true")
     @ResponseStatus( HttpStatus.OK) 
     public Iterable <Pegawai> getAllPegawai(){
@@ -48,18 +48,20 @@ public class PegawaiController {
     
     @PostMapping("")
     @ResponseBody
-    @PreAuthorize("hasPermission=('PEGAWAI_CREATE')")
+    @PreAuthorize("hasAuthority('PEGAWAI_CREATE')")
     public void tambahPegawai(@RequestBody @Valid Pegawai pegawai){
         pegawaiDao.save(pegawai);
     }
     @DeleteMapping("/{id}")
     @ResponseBody
+    @PreAuthorize("hasAuthority('PEGAWAI_DELETE')")
     public void hapusPegawai (@PathVariable String id){
         pegawaiDao.deleteById(id);
     }
     
     @PutMapping("/{id}")
     @ResponseBody
+    @PreAuthorize("hasAuthority('PEGAWAI_UPDATE')")
     public void updatePegawai(@RequestBody @Valid Pegawai pegawai, @PathVariable String id){
         Optional <Pegawai> p = pegawaiDao.findById(id);
         if (!p.isPresent())
