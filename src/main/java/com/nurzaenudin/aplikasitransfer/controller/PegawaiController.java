@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  * @author nurzaenudin
  */
 @Controller
-//@CrossOrigin(origins = "http://localhost:8080", allowCredentials = "true")
+@CrossOrigin(origins = "http://localhost:8080", allowCredentials = "true")
 @RequestMapping(path="/pegawai")
 public class PegawaiController {
     

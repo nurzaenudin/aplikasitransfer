@@ -1,0 +1,98 @@
+CREATE TABLE `s_user`(  
+  `id` VARCHAR(36) NOT NULL,
+  `username` VARCHAR(250) NOT NULL,
+  `active` BOOLEAN NOT NULL DEFAULT TRUE,
+  PRIMARY KEY (`id`)
+);
+
+CREATE TABLE `s_user_password`(  
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `user_id` VARCHAR(36) NOT NULL,
+  `password` VARCHAR(100) NOT NULL,
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`user_id`) REFERENCES `s_user`(`id`) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+CREATE TABLE `s_role` (  
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `role` VARCHAR(100) NOT NULL,
+  `description` VARCHAR(100) NOT NULL,
+  PRIMARY KEY (`id`)
+);
+
+CREATE TABLE `s_user_role` (  
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `user_id` VARCHAR(36) NOT NULL,
+  `role_id` INT NOT NULL,
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`user_id`) REFERENCES `s_user`(`id`) ON UPDATE CASCADE ON DELETE CASCADE,
+  FOREIGN KEY (`role_id`) REFERENCES `s_role`(`id`) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+CREATE TABLE `s_permission` (  
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(100) NOT NULL,
+  `description` VARCHAR(100) NOT NULL,
+  PRIMARY KEY (`id`)
+);
+
+CREATE TABLE `s_role_permission` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `role_id` int(11) NOT NULL,
+  `permission_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `role_id` (`role_id`),
+  KEY `permission_id` (`permission_id`),
+  FOREIGN KEY (`role_id`) REFERENCES `s_role` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY (`permission_id`) REFERENCES `s_permission` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+INSERT INTO `s_user` 
+(`id`,`username`, `active`)
+VALUES
+('001', 'user001', 1),
+('002', 'user002', 1),
+('003', 'user003', 1);
+
+INSERT INTO `s_user_password` 
+(`user_id`, `password`)
+VALUES
+('001', '$2a$12$36sdgpMvgF4/OKxXYXqpS.40ykG5rRwRU7p8BtOAi2B.Yuhr7xYky'),
+('002','$2a$12$gjIPcUx1c1IEmmBjjgyyjewLs75SBRmynG6nv11vbjXnbFrGBmcKG'),
+('003','$2a$12$s4PCYYM/whFSKZ3Djgji6..1UyERQ.xgtokNV8.MaclhVVHLiCXAi');
+
+INSERT INTO `s_permission` 
+(`name`, `description`)
+VALUES
+('PEGAWAI_CREATE', 'TAMBAH PEGAWAI'),
+('PEGAWAI_READ', 'LIHAT PEGAWAI'),
+('PEGAWAI_UPDATE', 'EDIT PEGAWAI'),
+('PEGAWAI_DELETE', 'HAPUS PEGAWAI');
+
+INSERT INTO `s_role` 
+(`role`, `description`)
+VALUES
+('STAF01', 'STAF 01'),
+('STAF02', 'STAF 02'),
+('STAF03', 'ADMIN');
+
+
+insert into `s_role_permission` 
+(`role_id`, `permission_id`)
+values
+(1, 2),
+(2, 1),
+(2, 2),
+(2, 3),
+(3,1),
+(3,2),
+(3,3),
+(3,4);
+
+INSERT INTO `s_user_role` 
+(`user_id`, `role_id`)
+VALUES
+('001',1),
+('002',1),
+('002',2),
+('003',3);
